@@ -1,0 +1,65 @@
+import random
+import time
+
+def jogo_memoria():
+    cartas = [
+        "Getulio1", "Getulio2",
+        "EstadoNovo1", "EstadoNovo2",
+        "CLT1", "CLT2",
+        "VotoFeminino1", "VotoFeminino2",
+        "IndustriaNacional1", "IndustriaNacional2",
+        "CarteiraIdentidade1", "CarteiraIdentidade2"
+    ]
+
+    random.shuffle(cartas)
+
+    tabuleiro = []
+    for i in range(4):
+        linha = []
+        for j in range(3):
+            carta = cartas.pop()
+            linha.append(carta)
+        tabuleiro.append(linha)
+
+    carta_virada = [[""] * 3 for _ in range(4)]
+    pares_encontrados = 0
+
+    print("Bem-vindo ao Jogo de Memória da Era Vargas!")
+    print("Encontre os pares de cartas relacionadas à Era Vargas.")
+
+    while pares_encontrados < 6:
+        for i in range(4):
+            for j in range(3):
+                print(f"[{carta_virada[i][j]:^10}]", end="")
+            print()
+
+        print("\nEscolha uma carta para virar (exemplo: A1): ")
+        escolha = input().upper()
+
+        if len(escolha) == 2 and escolha[0] in "ABCD" and escolha[1] in "123":
+            linha = ord(escolha[0]) - ord("A")
+            coluna = int(escolha[1]) - 1
+
+            if carta_virada[linha][coluna] == "":
+                carta_virada[linha][coluna] = tabuleiro[linha][coluna]
+                for i in range(4):
+                    for j in range(3):
+                        print(f"[{carta_virada[i][j]:^10}]", end="")
+                    print()
+                time.sleep(1)
+
+                if carta_virada[linha][coluna] == tabuleiro[linha][coluna]:
+                    pares_encontrados += 1
+                    print("Você encontrou um par!")
+                    time.sleep(1)
+                else:
+                    carta_virada[linha][coluna] = ""
+
+                print("\n" + "-" * 30)
+        else:
+            print("Escolha inválida. Digite uma letra de A a D seguida de um número de 1 a 3.")
+
+    print("\nParabéns, você encontrou todos os pares!")
+    print("Fim do jogo!")
+
+jogo_memoria()
